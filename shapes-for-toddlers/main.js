@@ -1,25 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta http-equiv="refresh" content="30" />
-  <link href="./favicon.ico" rel="icon" type="image/x-icon" />
-  <title>Shapes for toddlers</title>
-  <style>
-* { margin:0; padding:0; } /* to remove the top and left whitespace */
-
-html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
-
-canvas { display:block; } /* To remove the scrollbars */
-
-  </style>
-</head>
-
-<body>
-  <canvas id="canvas"></canvas>
-  <script charset="utf-8">
     (function() {
       var canvas = document.getElementById('canvas'),
         context = canvas.getContext('2d');
@@ -140,8 +118,3 @@ canvas { display:block; } /* To remove the scrollbars */
 
 
     })();
-  </script>
-</body>
-
-</html>
-
