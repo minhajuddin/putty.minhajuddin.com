@@ -1,0 +1,110 @@
+<!doctype html>
+<style type="text/css">
+  #wrapper{
+    width: 90%;
+    margin: 0 auto;
+  }
+  input {
+    font-size: 1.5em;
+    display: inline-block;
+  }
+  td.interval{
+    width: 10%;
+  }
+  td.steps{
+    width: 30%;
+  }
+  td.chords{
+    width: 60%;
+  }
+  #form{
+    width: 100%;
+  }
+  #form input{width: 100%;}
+  .hidden{display:none;}
+  #bar{width: 80%;margin-right: 10%; margin-left: 10%;}
+  #bar td{padding: 10px; font-weight: bold; text-align:center; width: 25%; font-size: 2em;}
+  #bar tr.first td{font-size: 5em !important; }
+</style>
+<div id="wrapper">
+  <form>
+    <table id='form'>
+      <tr>
+        <td class='chords'>Chords you want to play, just change this to a list of chords you want to practice. Seperate them using commas.</td>
+        <td class='steps'>Step sizes for changes. The chord will change after these many notes on the bar. e.g. 1 or 2 or 2,4,8 or 8,16. Use multiples of 2</td>
+        <td class='interval'>Seconds per chord change, e.g. 0.2 or 1.5 or 3</td>
+      </tr>
+      <tr>
+        <td><input type="text" id="chords" value="D,A,E,Am,Em,Dm" placeholder='Chords you want to play' /></td>
+        <td><input type="text" id="steps" value="2,4" placeholder='Step size for changes' /></td>
+        <td><input type="number" id="interval" value="2" placeholder='Time interval for each change'/></td>
+      </tr>
+    </table>
+    
+    
+    
+  </form>
+  <table id='bar'>
+    <tbody>
+      <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+    </tbody>
+  </table>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+var Config = {
+    intervalInMs: function(){
+      return Math.abs(Config.interval || 4) * 1000;
+    },
+    stepSize: function(){
+      var steps = Config.steps.replace(/[^0-9,]/g,'').replace(/^,+|,+$/g,'').split(',');
+      var index = Math.floor(Math.random() * steps.length);
+      return +(steps[index] || 4);
+    },
+    nextChord: function(){
+      var chords = Config.chords.split(',');
+      var index = Math.floor(Math.random() * chords.length);
+      return chords[index]||'-';
+    }
+  };
+$(function(){
+  var barChart = $('#bar tbody')
+
+  function addElWithDelay(parent, el, delay){
+    setTimeout(function(){
+      parent.append(el);
+    },delay);
+  }
+
+  function animateBar(chords){
+    var bar = $('<tr></tr>');
+    barChart.prepend(bar)
+    $('#bar .first').removeClass('first');
+    bar.addClass('first');
+    for(var i=0; i<4; i++){
+      addElWithDelay(bar, "<td>"+chords[i]+"</td>", Config.intervalInMs() * i)
+    }
+  }
+
+  function printBar(){
+    var i = 0;
+    var stepSize = Config.stepSize();
+    var chord;
+    var chords = [];
+    for(; i < 4; i +=  stepSize){
+      chord = Config.nextChord();
+      for(var j=0; j < stepSize; j++){
+        chords.push(chord)
+      }
+    }
+    animateBar(chords);
+    setTimeout(printBar, Config.intervalInMs() * 4)
+  }
+  $('input').on('keyup',function(){
+    $('input').each(function(){
+      Config[$(this).attr('id')] = $(this).val();
+    })
+  }).trigger('keyup')
+  setTimeout(printBar, Config.intervalInMs())
+})
+</script>
