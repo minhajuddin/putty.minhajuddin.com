@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width">
+                <title>Slow Redirect</title>
+        </head>
+        <body>
+                <h1>Slow Redirect</h1>
+                <p>
+                When you click the following button, we redirect immediately
+                However, when the target location takes 10 seconds to load and it *seems* that this page is slow to redirect.
+                </p>
+                <button id='redirect'>Redirect</button>
+                <script>
+                        document.getElementById('redirect').addEventListener('click', function() {
+                                window.location.href = 'https://httpbin.org/delay/10';
+                        });
+                </script>
+        </body>
+</html>
