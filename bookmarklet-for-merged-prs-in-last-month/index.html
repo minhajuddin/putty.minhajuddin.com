@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GitHub Pull Requests Bookmarklet Generator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <ol>
+    <li>
+      Enter your GitHub username.
+    </li>
+    <li>
+      Click on build bookmarklet.
+    </li>
+    <li>
+      Drag the bookmarklet to your bookmarks bar.
+    </li>
+    <li>
+      Click on the bookmarklet to see all your merged PRs for your org in the last 30 days.
+    </li>
+  </ol>
+  <form>
+    <label for="github-username">GitHub Username:</label>
+    <input value="" type="text" id="github-username" name="github-username"><br>
+
+    <label for="org-name">Organization Name:</label>
+    <input value="instacart" type="text" id="org-name" name="org-name"><br>
+
+    <button type="button" onclick="generateBookmarklet()">Build Bookmarklet</button>
+  </form>
+
+
+  <script>
+    function generateBookmarklet() {
+      const githubUsername = document.getElementById("github-username").value;
+      const orgName = document.getElementById("org-name").value;
+
+      const urlPrefix = `https://github.com/pulls?q=is%3Amerged+is%3Apr+author%3A${githubUsername}+archived%3Afalse+org%3A${orgName}+created%3A%3E`;
+
+      const bookmarkletLink = document.getElementById("bookmarklet-link");
+      const href=`javascript:(function(){const today = new Date();const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());const createdAt = oneMonthAgo.getFullYear() + '-' + (String(oneMonthAgo.getMonth() + 1).padStart(2, '0')) + '-' + String(oneMonthAgo.getDate()).padStart(2, '0');window.open("${urlPrefix}" + createdAt);})()`;
+
+      // Create a new anchor tag
+      const anchor = document.createElement('a');
+
+      // Set the href attribute
+      anchor.setAttribute('href', href);
+
+      // Set the text content
+      anchor.textContent = 'Merged PRs in the last month';
+
+      // Add the anchor tag to the DOM
+      document.body.appendChild(anchor);
+    }
+
+  </script>
+  
+</body>
+</html>
